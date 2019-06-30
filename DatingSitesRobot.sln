@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{EB892E09-E8DE-4BC3-844E-5DA2A68D5E8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.Badoo", "ConsoleApp.Badoo\ConsoleApp.Badoo.csproj", "{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EB892E09-E8DE-4BC3-844E-5DA2A68D5E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB892E09-E8DE-4BC3-844E-5DA2A68D5E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB892E09-E8DE-4BC3-844E-5DA2A68D5E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

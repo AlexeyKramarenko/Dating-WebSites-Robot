@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Selectors.Localizations;
 using OpenQA.Selenium;
+using System;
 
 namespace Infrastructure.Selectors.Requirements
 {
@@ -8,7 +9,8 @@ namespace Infrastructure.Selectors.Requirements
         private readonly BadooLocalization _localization;
         public BadooConditionSelectors(BadooLocalization localization)
         {
-            _localization = localization;
+            _localization = localization ??
+                throw new ArgumentNullException(nameof(localization));
         }
 
         public By Location { get => By.XPath($"//span[contains(string(), 'Київ')]"); }

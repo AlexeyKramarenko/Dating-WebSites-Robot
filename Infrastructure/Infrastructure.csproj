@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.5.0" />
-    <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.24.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
 
