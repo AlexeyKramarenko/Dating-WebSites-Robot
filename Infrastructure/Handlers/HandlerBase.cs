@@ -116,6 +116,13 @@ namespace Infrastructure.Handlers
                     _webDriver.FindElement(condition.Value2);
                 }
             }
+
+            foreach (var condition in profileConditions.AndConditions)
+            {
+                _webDriver.FindElement(condition.Value1);
+
+                _webDriver.FindElement(condition.Value2);
+            }
         }
 
         protected IEnumerable<string> ExtractHrefsFromAnchors(By anchorSelector)

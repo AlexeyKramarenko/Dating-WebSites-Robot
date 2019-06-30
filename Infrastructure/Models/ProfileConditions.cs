@@ -8,16 +8,21 @@ namespace Infrastructure.Models
     {
         public IEnumerable<OnlyTypeCondition> OnlyConditions { get; }
         public IEnumerable<OrTypeCondition> OrConditions { get; }
+        public IEnumerable<AndTypeCondition> AndConditions { get; }
 
         public ProfileConditions(
-                IEnumerable<OnlyTypeCondition> singleConditions,
-                IEnumerable<OrTypeCondition> pairConditions)
+                IEnumerable<OnlyTypeCondition> onlyConditions,
+                IEnumerable<OrTypeCondition> orConditions,
+                IEnumerable<AndTypeCondition> andConditions)
         {
-            OnlyConditions = singleConditions ??
-                throw new ArgumentNullException(nameof(singleConditions));
+            OnlyConditions = onlyConditions ??
+                throw new ArgumentNullException(nameof(onlyConditions));
 
-            OrConditions = pairConditions ??
-                throw new ArgumentNullException(nameof(pairConditions));
+            OrConditions = orConditions ??
+                throw new ArgumentNullException(nameof(orConditions));
+
+            AndConditions = andConditions ??
+                throw new ArgumentNullException(nameof(andConditions));
         }
     }
 
@@ -41,6 +46,21 @@ namespace Infrastructure.Models
         public By Value2 { get; }
 
         public OrTypeCondition(By value1, By value2)
+        {
+            Value1 = value1
+                ?? throw new ArgumentNullException(nameof(value1));
+
+            Value2 = value2
+                ?? throw new ArgumentNullException(nameof(value2));
+        }
+    }
+
+    public class AndTypeCondition
+    {
+        public By Value1 { get; }
+        public By Value2 { get; }
+
+        public AndTypeCondition(By value1, By value2)
         {
             Value1 = value1
                 ?? throw new ArgumentNullException(nameof(value1));

@@ -49,7 +49,7 @@ namespace ConsoleApp.Badoo
         {
             var localization = LocalizationHelper.GetBadooLocalization(lookingFor);
 
-            var selectors = new BadooConditionSelectors(localization);
+            var selectors = new BadooRequirementsSelectors(localization);
 
             var onlyConditions = new List<OnlyTypeCondition>
             {
@@ -62,7 +62,9 @@ namespace ConsoleApp.Badoo
                 new OrTypeCondition(selectors.SmokingValue1, selectors.SmokingValue2),
             };
 
-            return new ProfileConditions(onlyConditions, orConditions);
+            var andConditions = new List<AndTypeCondition>();
+
+            return new ProfileConditions(onlyConditions, orConditions, andConditions);
         }
 
         #endregion

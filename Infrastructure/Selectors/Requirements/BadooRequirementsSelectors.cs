@@ -4,10 +4,10 @@ using System;
 
 namespace Infrastructure.Selectors.Requirements
 {
-    public class BadooConditionSelectors
+    public class BadooRequirementsSelectors
     {
         private readonly BadooLocalization _badooLocalization;
-        public BadooConditionSelectors(BadooLocalization badooLocalization)
+        public BadooRequirementsSelectors(BadooLocalization badooLocalization)
         {
             _badooLocalization = badooLocalization ??
                 throw new ArgumentNullException(nameof(badooLocalization));

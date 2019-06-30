@@ -15,7 +15,6 @@ namespace Infrastructure.Selectors.Navigation
         public By UserNameLink { get => By.ClassName("js-profile-header-name"); }
         public By ClosePopupLink { get => By.ClassName("js-ovl-close"); }
         public By CloseNotificationsLink { get => By.ClassName("js-chrome-pushes-deny"); }
-        public By OnlineBtn { get => By.XPath("//span[contains(string(), 'Онлайн')]"); }
         public By AddToFavouritesBtn { get => By.ClassName(AddToFavouritesClassName); }
         public By ProfileHeaderDropDownList { get => By.ClassName("js-profile-header-more"); }
         public By UserCardLink { get => By.ClassName("user-card__link"); }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,6 +9,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Lang\Badoo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Badoo.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Lang\Mamba.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Mamba.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Lang\Badoo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Badoo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Lang\Badoo.ru.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Badoo.Designer.cs</LastGenOutput>
@@ -18,9 +35,9 @@
       <LastGenOutput>Badoo.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Lang\Badoo.resx">
+    <EmbeddedResource Update="Lang\Mamba.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Badoo.Designer.cs</LastGenOutput>
+      <LastGenOutput>Mamba.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

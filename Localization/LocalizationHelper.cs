@@ -26,5 +26,17 @@ namespace Localization
                              Lang.Badoo.Smoking_I_dont_like_it,
                              Lang.Badoo.Smoking_I_hate_smoking);
         }
+
+        public static MambaLocalization GetMambaLocalization()
+        {
+            return new MambaLocalization(
+                             Lang.Mamba.SmokingHeader,
+                             Lang.Mamba.SmokingValue,
+                             Lang.Mamba.RelationshipStatusHeader,
+                             Lang.Mamba.RelationshipStatusValue,
+                             Lang.Mamba.KidsHeader,
+                             Lang.Mamba.KidsValue1,
+                             Lang.Mamba.KidsValue2);
+        }
     }
 }

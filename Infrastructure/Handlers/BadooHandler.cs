@@ -28,7 +28,7 @@ namespace Infrastructure.Handlers
 
         public override void SearchFromEncounters()
         {
-            WaitSeconds(7);
+            WaitSeconds(5);
 
             try
             {
@@ -88,11 +88,6 @@ namespace Infrastructure.Handlers
                     ClickLikeBtn();
 
                     WaitSeconds(2);
-
-                    //ClosePopupWindow();
-                    //WaitSeconds(2);
-                    //AddToFavourites();
-                    //WaitSeconds(3);
                 }
                 catch (NoSuchElementException)
                 {
@@ -107,15 +102,15 @@ namespace Infrastructure.Handlers
         {
             WaitSeconds(7);
 
-            var text = _webDriver.FindElement(_selectors.FeaturedPeople)
-                                 .Text;
-            switch (text)
+            switch (_webDriver.Title)
             {
-                case "Самые известные":
+                case "Badoo — Знакомства":
+                case "Badoo – Люди рядом":
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
                     break;
 
-                case "Популярні":
+                case "Badoo — Знайомства":
+                case "Badoo – Люди поблизу":
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("uk-UA");
                     break;
             }
