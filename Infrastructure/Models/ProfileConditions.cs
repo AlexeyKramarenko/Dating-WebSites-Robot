@@ -6,26 +6,26 @@ namespace Infrastructure.Models
 {
     public class ProfileConditions
     {
-        public IEnumerable<SingleCondition> SingleConditions { get; }
-        public IEnumerable<PairCondition> PairConditions { get; }
+        public IEnumerable<OnlyTypeCondition> OnlyConditions { get; }
+        public IEnumerable<OrTypeCondition> OrConditions { get; }
 
         public ProfileConditions(
-                IEnumerable<SingleCondition> singleConditions,
-                IEnumerable<PairCondition> pairConditions)
+                IEnumerable<OnlyTypeCondition> singleConditions,
+                IEnumerable<OrTypeCondition> pairConditions)
         {
-            SingleConditions = singleConditions ??
+            OnlyConditions = singleConditions ??
                 throw new ArgumentNullException(nameof(singleConditions));
 
-            PairConditions = pairConditions ??
+            OrConditions = pairConditions ??
                 throw new ArgumentNullException(nameof(pairConditions));
         }
     }
 
-    public class SingleCondition
+    public class OnlyTypeCondition
     {
         public By Value { get; }
 
-        public SingleCondition(By value)
+        public OnlyTypeCondition(By value)
         {
             Value = value
                ?? throw new ArgumentNullException(nameof(value));
@@ -35,12 +35,12 @@ namespace Infrastructure.Models
     /// <summary>
     /// When any from two conditions is okay
     /// </summary>
-    public class PairCondition
+    public class OrTypeCondition
     {
         public By Value1 { get; }
         public By Value2 { get; }
 
-        public PairCondition(By value1, By value2)
+        public OrTypeCondition(By value1, By value2)
         {
             Value1 = value1
                 ?? throw new ArgumentNullException(nameof(value1));

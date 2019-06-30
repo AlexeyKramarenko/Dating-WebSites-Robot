@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.Badoo", "ConsoleApp.Badoo\ConsoleApp.Badoo.csproj", "{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization", "Localization\Localization.csproj", "{E632524A-594B-4C7B-9DBE-DA1D6D537A53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B53680B-51FB-4BE4-852C-5099E5E3DCCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E632524A-594B-4C7B-9DBE-DA1D6D537A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E632524A-594B-4C7B-9DBE-DA1D6D537A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E632524A-594B-4C7B-9DBE-DA1D6D537A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E632524A-594B-4C7B-9DBE-DA1D6D537A53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

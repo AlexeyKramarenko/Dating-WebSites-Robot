@@ -2,6 +2,8 @@
 using Infrastructure.Selectors;
 using OpenQA.Selenium;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Infrastructure.Handlers
@@ -11,6 +13,7 @@ namespace Infrastructure.Handlers
         private readonly IWebDriver _webDriver;
         private readonly ILoginSelectors _loginSelectors;
         private readonly IJavaScriptExecutor jsExecutor;
+        protected ProfileConditions ProfileConditions { get; private set; }
 
         protected HandlerBase(
                       IWebDriver webDriver,
@@ -26,10 +29,10 @@ namespace Infrastructure.Handlers
         }
 
         #region Public methods
-
+        public abstract void SetLocalization();
         public abstract void SearchFromEncounters();
         public abstract void SearchFromPeopleNearby();
-        public virtual void Login(LoginData loginData)
+        public void Login(LoginData loginData)
         {
             GoToUrl(loginData.SignInUrl);
 
@@ -45,6 +48,12 @@ namespace Infrastructure.Handlers
                       .Click();
         }
 
+        public void SetProfileConditions(ProfileConditions profileConditions)
+        {
+            ProfileConditions = profileConditions ??
+                throw new ArgumentNullException(nameof(profileConditions));
+        }
+
         #endregion
 
         #region Protected Methods
@@ -53,10 +62,24 @@ namespace Infrastructure.Handlers
         protected abstract void ClickLikeBtn();
         protected abstract void ClickDislikeBtn();
 
-        protected void Click(By selector)
+        protected void Click(By selector, int withInterval = 3)
         {
-            _webDriver.FindElement(selector)
-                      .Click();
+            try
+            {
+                _webDriver.FindElement(selector)
+                          .Click();
+            }
+            catch (NoSuchElementException)
+            {
+                WaitSeconds(withInterval);
+
+                _webDriver.FindElement(selector)
+                          .Click();
+            }
+            catch (WebDriverException)
+            {
+
+            }
         }
 
         protected void JSClick(string querySelector)
@@ -70,19 +93,19 @@ namespace Infrastructure.Handlers
                       .GoToUrl(url);
         }
 
-        protected virtual void CheckProfile(ProfileConditions profileConditions)
+        protected void CheckProfile(ProfileConditions profileConditions)
         {
             if (profileConditions == null)
             {
                 throw new ArgumentNullException(nameof(profileConditions));
             }
 
-            foreach (var condition in profileConditions.SingleConditions)
+            foreach (var condition in profileConditions.OnlyConditions)
             {
                 _webDriver.FindElement(condition.Value);
             }
 
-            foreach (var condition in profileConditions.PairConditions)
+            foreach (var condition in profileConditions.OrConditions)
             {
                 try
                 {
@@ -93,6 +116,15 @@ namespace Infrastructure.Handlers
                     _webDriver.FindElement(condition.Value2);
                 }
             }
+        }
+
+        protected IEnumerable<string> ExtractHrefsFromAnchors(By anchorSelector)
+        {
+            var anchors = _webDriver.FindElements(anchorSelector);
+
+            var hrefs = anchors.Select(e => e.GetAttribute("href"));
+
+            return hrefs;
         }
 
         protected void WaitSeconds(int count)

@@ -1,9 +1,10 @@
-﻿using Infrastructure.Models;
-using Infrastructure.Selectors.Navigation;
+﻿using Infrastructure.Selectors.Navigation;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 namespace Infrastructure.Handlers
 {
@@ -11,28 +12,23 @@ namespace Infrastructure.Handlers
     {
         private readonly IWebDriver _webDriver;
         private readonly BadooNavigationSelectors _selectors;
-        private readonly ProfileConditions _profileConditions;
 
         public BadooHandler(
-                     IWebDriver webDriver,
-                     BadooNavigationSelectors selectors,
-                     ProfileConditions profileConditions) : base(webDriver, selectors)
+                   IWebDriver webDriver,
+                   BadooNavigationSelectors selectors) : base(webDriver, selectors)
         {
             _webDriver = webDriver ??
                 throw new ArgumentNullException(nameof(webDriver));
 
             _selectors = selectors ??
                 throw new ArgumentNullException(nameof(selectors));
-
-            _profileConditions = profileConditions ??
-                throw new ArgumentNullException(nameof(profileConditions));
         }
 
         #region Public Methods
 
         public override void SearchFromEncounters()
         {
-            WaitSeconds(10);
+            WaitSeconds(7);
 
             try
             {
@@ -42,11 +38,13 @@ namespace Infrastructure.Handlers
 
                     try
                     {
-                        CheckProfile(_profileConditions);
+                        WaitSeconds(1);
+
+                        CheckProfile(ProfileConditions);
 
                         ClickLikeBtn();
                     }
-                    catch (NoSuchElementException)
+                    catch (NoSuchElementException exc)
                     {
                         ClickDislikeBtn();
                     }
@@ -64,7 +62,7 @@ namespace Infrastructure.Handlers
                 }
                 catch (NoSuchElementException)
                 {
-                    //Let program work further...
+
                 }
             }
         }
@@ -73,7 +71,7 @@ namespace Infrastructure.Handlers
         {
             WaitSeconds(5);
 
-            var urls = GetUrlsFromPages(3);
+            var urls = GetUrlsFromPages(2);
 
             foreach (var url in urls)
             {
@@ -83,17 +81,18 @@ namespace Infrastructure.Handlers
                 {
                     WaitSeconds(2);
 
-                    CheckProfile(_profileConditions);
+                    CheckProfile(ProfileConditions);
 
                     WaitSeconds(2);
 
                     ClickLikeBtn();
 
-                    WaitSeconds(3);
+                    WaitSeconds(2);
 
-                    AddToFavourites();
-
-                    WaitSeconds(3);
+                    //ClosePopupWindow();
+                    //WaitSeconds(2);
+                    //AddToFavourites();
+                    //WaitSeconds(3);
                 }
                 catch (NoSuchElementException)
                 {
@@ -104,6 +103,26 @@ namespace Infrastructure.Handlers
             }
         }
 
+        public override void SetLocalization()
+        {
+            WaitSeconds(7);
+
+            var text = _webDriver.FindElement(_selectors.FeaturedPeople)
+                                 .Text;
+            switch (text)
+            {
+                case "Самые известные":
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
+                    break;
+
+                case "Популярні":
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("uk-UA");
+                    break;
+            }
+
+            WaitSeconds(3);
+        }
+
         #endregion
 
         #region Protected Methods
@@ -112,50 +131,14 @@ namespace Infrastructure.Handlers
         {
             WaitSeconds(1);
 
-            try
-            {
-                Click(_selectors.LikeBtn);
-            }
-            catch (NoSuchElementException)
-            {
-                WaitSeconds(2);
+            Click(_selectors.LikeBtn);
 
-                Click(_selectors.LikeBtn);
-            }
-
-            try
-            {
-                WaitSeconds(1);
-
-                Click(_selectors.CloseNotificationsLink);
-            }
-            catch (NoSuchElementException)
-            {
-
-            }
+            Click(_selectors.CloseNotificationsLink);
         }
 
         protected override void ClickDislikeBtn()
         {
-            try
-            {
-                Click(_selectors.DislikeBtn);
-            }
-            catch (NoSuchElementException)
-            {
-                WaitSeconds(3);
-
-                try
-                {
-                    Click(_selectors.DislikeBtn);
-                }
-                catch (NoSuchElementException)
-                {
-                    WaitSeconds(3);
-
-                    Click(_selectors.DislikeBtn);
-                }
-            }
+            Click(_selectors.DislikeBtn);
         }
 
         protected override void OpenProfile()
@@ -164,16 +147,7 @@ namespace Infrastructure.Handlers
             {
                 WaitSeconds(1);
 
-                try
-                {
-                    Click(_selectors.UserNameLink);
-                }
-                catch (NoSuchElementException)
-                {
-                    WaitSeconds(10);
-
-                    Click(_selectors.UserNameLink);
-                }
+                Click(_selectors.UserNameLink, 10);
             }
             catch (ElementNotInteractableException)
             {
@@ -200,7 +174,7 @@ namespace Infrastructure.Handlers
             {
                 Click(_selectors.ProfileHeaderDropDownList);
 
-                WaitSeconds(1);
+                WaitSeconds(2);
 
                 try
                 {
@@ -217,7 +191,7 @@ namespace Infrastructure.Handlers
 
         private IEnumerable<string> GetUrlsFromPages(int pagesCount)
         {
-            var hrefsFromRequestedPages = new List<string>();
+            var hrefsFromAllRequestedPages = new List<string>();
 
             for (int i = 1; i <= pagesCount; i++)
             {
@@ -227,18 +201,10 @@ namespace Infrastructure.Handlers
 
                 var hrefsFromSinglePage = ExtractHrefsFromAnchors(_selectors.UserCardLink);
 
-                hrefsFromRequestedPages.AddRange(hrefsFromSinglePage);
+                hrefsFromAllRequestedPages.AddRange(hrefsFromSinglePage);
             }
 
-            return hrefsFromRequestedPages.Distinct();
-        }
-
-        private IEnumerable<string> ExtractHrefsFromAnchors(By anchorSelector)
-        {
-            var hrefs = _webDriver.FindElements(anchorSelector)
-                                  .Select(e => e.GetProperty("href"))
-                                  .Select(link => link.Split('?')[0]);
-            return hrefs;
+            return hrefsFromAllRequestedPages.Distinct();
         }
 
         #endregion

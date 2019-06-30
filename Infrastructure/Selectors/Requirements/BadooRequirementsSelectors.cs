@@ -6,18 +6,17 @@ namespace Infrastructure.Selectors.Requirements
 {
     public class BadooConditionSelectors
     {
-        private readonly BadooLocalization _localization;
-        public BadooConditionSelectors(BadooLocalization localization)
+        private readonly BadooLocalization _badooLocalization;
+        public BadooConditionSelectors(BadooLocalization badooLocalization)
         {
-            _localization = localization ??
-                throw new ArgumentNullException(nameof(localization));
+            _badooLocalization = badooLocalization ??
+                throw new ArgumentNullException(nameof(badooLocalization));
         }
 
-        public By Location { get => By.XPath($"//span[contains(string(), 'Київ')]"); }
-        public By RelationshipStatus { get => By.XPath($"//div[contains(string(), 'Я вільна')]"); }
-        public By ChildrenValue1 { get => By.XPath($"//div[contains(string(), 'Коли-небудь')]"); }
-        public By ChildrenValue2 { get => By.XPath($"//div[contains(string(), 'Ні, ніколи')]"); }
-        public By SmokingValue1 { get => By.XPath($"//div[contains(string(), 'Не палю')]"); }
-        public By SmokingValue2 { get => By.XPath($"//div[contains(string(), 'Проти паління')]"); }
+        public By RelationshipStatus { get => By.XPath($"//div[contains(string(), '{_badooLocalization.RelationshipStatus}')]"); }
+        public By KidsValue1 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.KidsValue1}')]"); }
+        public By KidsValue2 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.KidsValue2}')]"); }
+        public By SmokingValue1 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.SmokingValue1}')]"); }
+        public By SmokingValue2 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.SmokingValue2}')]"); }
     }
 }

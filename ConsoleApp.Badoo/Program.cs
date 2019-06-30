@@ -1,11 +1,11 @@
-﻿using Utils;
+﻿using Infrastructure.Handlers;
 using Infrastructure.Models;
-using Infrastructure.Handlers;
 using Infrastructure.Selectors.Navigation;
-using System.Collections.Generic;
 using Infrastructure.Selectors.Requirements;
-using Infrastructure.Selectors.Localizations;
+using Localization;
 using System;
+using System.Collections.Generic;
+using Utils;
 
 namespace ConsoleApp.Badoo
 {
@@ -15,39 +15,23 @@ namespace ConsoleApp.Badoo
         {
             Console.WriteLine($"If you want make search from 'Encounters' press '1' button.{Environment.NewLine}If you want make search from 'People Nearby' press any other button.");
 
-            #region User Input Data
-
             var answer = Console.ReadLine();
 
             var loginData = new LoginData(signInUrl: "https://badoo.com/signin/",
                                           email: "***",
                                           password: "***");
 
-            var localization = new BadooLocalization();
-
-            var selectors = new BadooConditionSelectors(localization);
-
-            var singleConditions = new List<SingleCondition>
-            {
-                new SingleCondition(selectors.Location),
-                new SingleCondition(selectors.RelationshipStatus)
-            };
-
-            var pairConditions = new List<PairCondition>
-            {
-                new PairCondition(selectors.ChildrenValue1, selectors.ChildrenValue2),
-                new PairCondition(selectors.SmokingValue1, selectors.SmokingValue2),
-            };
-
-            var profileConditions = new ProfileConditions(singleConditions, pairConditions);
-
-            #endregion
-
             var webDriver = WebDriverFactory.Create();
 
-            var handler = new BadooHandler(webDriver, new BadooNavigationSelectors(), profileConditions);
+            var handler = new BadooHandler(webDriver, new BadooNavigationSelectors());
 
             handler.Login(loginData);
+
+            handler.SetLocalization();
+
+            var profileConditions = GetProfileConditions(lookingFor: Sex.Woman);
+
+            handler.SetProfileConditions(profileConditions);
 
             if (answer == "1")
             {
@@ -58,5 +42,29 @@ namespace ConsoleApp.Badoo
                 handler.SearchFromPeopleNearby();
             }
         }
+
+        #region Private Methods
+
+        private static ProfileConditions GetProfileConditions(Sex lookingFor)
+        {
+            var localization = LocalizationHelper.GetBadooLocalization(lookingFor);
+
+            var selectors = new BadooConditionSelectors(localization);
+
+            var onlyConditions = new List<OnlyTypeCondition>
+            {
+                new OnlyTypeCondition(selectors.RelationshipStatus)
+            };
+
+            var orConditions = new List<OrTypeCondition>
+            {
+                new OrTypeCondition(selectors.KidsValue1, selectors.KidsValue2),
+                new OrTypeCondition(selectors.SmokingValue1, selectors.SmokingValue2),
+            };
+
+            return new ProfileConditions(onlyConditions, orConditions);
+        }
+
+        #endregion
     }
 }
