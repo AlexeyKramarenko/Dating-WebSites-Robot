@@ -1,4 +1,8 @@
-﻿using Infrastructure.Selectors.Navigation;
+﻿using Infrastructure.Requirements;
+using Infrastructure.Requirements.Builders;
+using Infrastructure.Selectors.Navigation;
+using Infrastructure.Selectors.Requirements;
+using Localization;
 using OpenQA.Selenium;
 using System;
 using System.Globalization;
@@ -40,7 +44,7 @@ namespace Infrastructure.Handlers
                 {
                     WaitSeconds(3);
 
-                    CheckProfile(ProfileConditions);
+                    CheckProfile();
 
                     CloseJustOpenedTab();
 
@@ -111,6 +115,15 @@ namespace Infrastructure.Handlers
             {
 
             }
+        }
+
+        protected override IRequirementsBuilder CreateRequirementsBuilder(Sex sex)
+        {
+            var localization = LocalizationHelper.GetMambaLocalization(sex);
+
+            var selectors = new MambaRequirementsSelectors(localization);
+
+            return new MambaRequirementsBuilder(selectors);
         }
 
         #endregion

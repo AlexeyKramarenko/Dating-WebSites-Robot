@@ -1,4 +1,4 @@
-﻿using Infrastructure.Selectors.Localizations;
+﻿using Localization.Models;
 
 namespace Localization
 {
@@ -12,22 +12,22 @@ namespace Localization
     {
         public static BadooLocalization GetBadooLocalization(Sex lookingFor)
         {
-            var relationShipStatus = Lang.Badoo.Relationship_I_m_single_boy;
+            var freeRelationShipStatus = Lang.Badoo.Relationship_I_m_single_boy;
 
             if (lookingFor == Sex.Woman)
             {
-                relationShipStatus = Lang.Badoo.Relationship_I_m_single_girl;
+                freeRelationShipStatus = Lang.Badoo.Relationship_I_m_single_girl;
             }
 
             return new BadooLocalization(
-                             relationShipStatus,
+                             freeRelationShipStatus,
                              Lang.Badoo.Kids_someday,
                              Lang.Badoo.Kids_no_never,
                              Lang.Badoo.Smoking_I_dont_like_it,
                              Lang.Badoo.Smoking_I_hate_smoking);
         }
 
-        public static MambaLocalization GetMambaLocalization()
+        public static MambaLocalization GetMambaLocalization(Sex lookingFor)
         {
             return new MambaLocalization(
                              Lang.Mamba.SmokingHeader,

@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Selectors.Localizations
+﻿namespace Localization.Models
 {
     public class MambaLocalization
     {

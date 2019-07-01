@@ -1,4 +1,4 @@
-﻿using Infrastructure.Selectors.Localizations;
+﻿using Localization.Models;
 using OpenQA.Selenium;
 
 namespace Infrastructure.Selectors.Requirements

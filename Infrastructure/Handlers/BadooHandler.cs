@@ -1,4 +1,7 @@
-﻿using Infrastructure.Selectors.Navigation;
+﻿using Infrastructure.Requirements;
+using Infrastructure.Selectors.Navigation;
+using Infrastructure.Selectors.Requirements;
+using Localization;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -40,7 +43,7 @@ namespace Infrastructure.Handlers
                     {
                         WaitSeconds(1);
 
-                        CheckProfile(ProfileConditions);
+                        CheckProfile();
 
                         ClickLikeBtn();
                     }
@@ -81,7 +84,7 @@ namespace Infrastructure.Handlers
                 {
                     WaitSeconds(2);
 
-                    CheckProfile(ProfileConditions);
+                    CheckProfile();
 
                     WaitSeconds(2);
 
@@ -148,6 +151,15 @@ namespace Infrastructure.Handlers
             {
 
             }
+        }
+
+        protected override IRequirementsBuilder CreateRequirementsBuilder(Sex sex)
+        {
+            var localization = LocalizationHelper.GetBadooLocalization(sex);
+
+            var selectors = new BadooRequirementsSelectors(localization);
+
+            return new BadooRequirementsBuilder(selectors);
         }
 
         #endregion 

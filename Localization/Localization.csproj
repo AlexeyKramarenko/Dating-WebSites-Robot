@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Lang\Badoo.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

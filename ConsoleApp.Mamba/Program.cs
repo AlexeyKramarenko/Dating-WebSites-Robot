@@ -1,10 +1,6 @@
 ﻿using Infrastructure.Handlers;
 using Infrastructure.Models;
 using Infrastructure.Selectors.Navigation;
-using Infrastructure.Selectors.Requirements;
-using Localization;
-using System;
-using System.Collections.Generic;
 using Utils;
 
 namespace ConsoleApp.Mamba
@@ -13,9 +9,7 @@ namespace ConsoleApp.Mamba
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"If you want make search from 'Encounters' press '1' button.{Environment.NewLine}If you want make search from 'People Nearby' press any other button.");
-
-            var answer = Console.ReadLine();
+            var dialogResult = ConsoleAppHelper.RunDialog();
 
             var loginData = new LoginData(signInUrl: "https://www.mamba.ru/login",
                                           email: "***",
@@ -23,15 +17,17 @@ namespace ConsoleApp.Mamba
 
             var webDriver = WebDriverFactory.Create();
 
-            var handler = new MambaHandler(webDriver, new MambaNavigationSelectors());
+            HandlerBase handler = new MambaHandler(webDriver, new MambaNavigationSelectors());
 
             handler.Login(loginData);
 
             handler.SetLocalization();
 
-            handler.SetProfileConditions(ProfileConditions);
+            var requirements = handler.BuildProfileRequirements(dialogResult);
 
-            if (answer == "1")
+            handler.SetProfileRequirements(requirements);
+
+            if (dialogResult.Search == Search.Encounters)
             {
                 handler.SearchFromEncounters();
             }
@@ -40,37 +36,5 @@ namespace ConsoleApp.Mamba
                 handler.SearchFromPeopleNearby();
             }
         }
-
-        #region Private Methods
-
-        private static ProfileConditions ProfileConditions
-        {
-            get
-            {
-                var localization = LocalizationHelper.GetMambaLocalization();
-
-                var selectors = new MambaRequirementsSelectors(localization);
-
-                var onlyConditions = new List<OnlyTypeCondition>
-                {
-                    new OnlyTypeCondition(selectors.KidsHeader),
-                    new OnlyTypeCondition(selectors.RelationshipStatusHeader)
-                };
-
-                var orConditions = new List<OrTypeCondition>
-                {
-                    new OrTypeCondition(selectors.KidsValue1, selectors.KidsValue2)
-                };
-
-                var andConditions = new List<AndTypeCondition>
-                {
-                    new AndTypeCondition(selectors.SmokingHeader, selectors.SmokingValue)
-                };
-
-                return new ProfileConditions(onlyConditions, orConditions, andConditions);
-            }
-        }
-
-        #endregion
     }
 }

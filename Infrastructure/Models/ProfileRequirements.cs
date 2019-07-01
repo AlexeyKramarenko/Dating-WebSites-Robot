@@ -4,26 +4,11 @@ using System.Collections.Generic;
 
 namespace Infrastructure.Models
 {
-    public class ProfileConditions
+    public class ProfileRequirements
     {
-        public IEnumerable<OnlyTypeCondition> OnlyConditions { get; }
-        public IEnumerable<OrTypeCondition> OrConditions { get; }
-        public IEnumerable<AndTypeCondition> AndConditions { get; }
-
-        public ProfileConditions(
-                IEnumerable<OnlyTypeCondition> onlyConditions,
-                IEnumerable<OrTypeCondition> orConditions,
-                IEnumerable<AndTypeCondition> andConditions)
-        {
-            OnlyConditions = onlyConditions ??
-                throw new ArgumentNullException(nameof(onlyConditions));
-
-            OrConditions = orConditions ??
-                throw new ArgumentNullException(nameof(orConditions));
-
-            AndConditions = andConditions ??
-                throw new ArgumentNullException(nameof(andConditions));
-        }
+        public List<OnlyTypeCondition> OnlyConditions { get; } = new List<OnlyTypeCondition>();
+        public List<OrTypeCondition> OrConditions { get; } = new List<OrTypeCondition>();
+        public List<AndTypeCondition> AndConditions { get; } = new List<AndTypeCondition>();
     }
 
     public class OnlyTypeCondition

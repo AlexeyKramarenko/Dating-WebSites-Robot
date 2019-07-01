@@ -1,4 +1,4 @@
-﻿using Infrastructure.Selectors.Localizations;
+﻿using Localization.Models;
 using OpenQA.Selenium;
 using System;
 
@@ -13,7 +13,7 @@ namespace Infrastructure.Selectors.Requirements
                 throw new ArgumentNullException(nameof(badooLocalization));
         }
 
-        public By RelationshipStatus { get => By.XPath($"//div[contains(string(), '{_badooLocalization.RelationshipStatus}')]"); }
+        public By FreeRelationshipStatus { get => By.XPath($"//div[contains(string(), '{_badooLocalization.FreeRelationshipStatus}')]"); }
         public By KidsValue1 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.KidsValue1}')]"); }
         public By KidsValue2 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.KidsValue2}')]"); }
         public By SmokingValue1 { get => By.XPath($"//div[contains(string(), '{_badooLocalization.SmokingValue1}')]"); }

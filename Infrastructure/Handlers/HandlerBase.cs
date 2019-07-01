@@ -1,5 +1,7 @@
 ﻿using Infrastructure.Models;
+using Infrastructure.Requirements;
 using Infrastructure.Selectors;
+using Localization;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,10 @@ namespace Infrastructure.Handlers
 {
     public abstract class HandlerBase
     {
+        private ProfileRequirements _profileRequirements;
         private readonly IWebDriver _webDriver;
         private readonly ILoginSelectors _loginSelectors;
         private readonly IJavaScriptExecutor jsExecutor;
-        protected ProfileConditions ProfileConditions { get; private set; }
 
         protected HandlerBase(
                       IWebDriver webDriver,
@@ -32,6 +34,7 @@ namespace Infrastructure.Handlers
         public abstract void SetLocalization();
         public abstract void SearchFromEncounters();
         public abstract void SearchFromPeopleNearby();
+
         public void Login(LoginData loginData)
         {
             GoToUrl(loginData.SignInUrl);
@@ -48,10 +51,32 @@ namespace Infrastructure.Handlers
                       .Click();
         }
 
-        public void SetProfileConditions(ProfileConditions profileConditions)
+        public void SetProfileRequirements(ProfileRequirements requirements)
         {
-            ProfileConditions = profileConditions ??
-                throw new ArgumentNullException(nameof(profileConditions));
+            _profileRequirements = requirements ??
+                throw new ArgumentNullException(nameof(requirements));
+        }
+
+        public ProfileRequirements BuildProfileRequirements(DialogResult dialogResult)
+        {
+            var requirementsBuilder = CreateRequirementsBuilder(dialogResult.Sex);
+
+            if (dialogResult.IsFree)
+            {
+                requirementsBuilder.IncludeFreeRelationshipStatus();
+            }
+
+            if (dialogResult.DoesntHaveKids)
+            {
+                requirementsBuilder.IncludeAbsenceOfKids();
+            }
+
+            if (dialogResult.IsNonSmoker)
+            {
+                requirementsBuilder.IncludeAbsenceOfSmoking();
+            }
+
+            return requirementsBuilder.Result;
         }
 
         #endregion
@@ -61,8 +86,9 @@ namespace Infrastructure.Handlers
         protected abstract void OpenProfile();
         protected abstract void ClickLikeBtn();
         protected abstract void ClickDislikeBtn();
+        protected abstract IRequirementsBuilder CreateRequirementsBuilder(Sex sex);
 
-        protected void Click(By selector, int withInterval = 3)
+        protected void Click(By selector, int withSecondsInterval = 3)
         {
             try
             {
@@ -71,7 +97,7 @@ namespace Infrastructure.Handlers
             }
             catch (NoSuchElementException)
             {
-                WaitSeconds(withInterval);
+                WaitSeconds(withSecondsInterval);
 
                 _webDriver.FindElement(selector)
                           .Click();
@@ -93,19 +119,19 @@ namespace Infrastructure.Handlers
                       .GoToUrl(url);
         }
 
-        protected void CheckProfile(ProfileConditions profileConditions)
+        protected void CheckProfile()
         {
-            if (profileConditions == null)
+            if (_profileRequirements == null)
             {
-                throw new ArgumentNullException(nameof(profileConditions));
+                throw new ArgumentNullException(nameof(_profileRequirements));
             }
 
-            foreach (var condition in profileConditions.OnlyConditions)
+            foreach (var condition in _profileRequirements.OnlyConditions)
             {
                 _webDriver.FindElement(condition.Value);
             }
 
-            foreach (var condition in profileConditions.OrConditions)
+            foreach (var condition in _profileRequirements.OrConditions)
             {
                 try
                 {
@@ -117,7 +143,7 @@ namespace Infrastructure.Handlers
                 }
             }
 
-            foreach (var condition in profileConditions.AndConditions)
+            foreach (var condition in _profileRequirements.AndConditions)
             {
                 _webDriver.FindElement(condition.Value1);
 
