@@ -1,0 +1,61 @@
+﻿<Window x:Class="WpfApp.Badoo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="350">
+
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,80,0,20" Width="250">
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15" >
+                <TextBlock Text="You looks for:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <ComboBox ItemsSource="{Binding PossibleSexTypes, Mode=OneWay}" 
+                          SelectedItem="{Binding SelectedSexType}"
+                          Width="90"                           
+                          VerticalAlignment="Center"
+                          Margin="54,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        Margin="0,0,0,20" 
+                        Width="250">
+                <TextBlock Text="You want to search in:" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Left"/>
+                <ComboBox ItemsSource="{Binding PossibleSearchLocations, Mode=OneWay}" 
+                          SelectedItem="{Binding SelectedSearchLocation}"
+                          Width="90" 
+                          Margin="10,0,0,0"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <CheckBox IsChecked="{Binding Path=IsFree.IsChecked, Mode=TwoWay}" Margin="3" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Path=IsFree.Text}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <CheckBox IsChecked="{Binding Path=DoesntHaveKids.IsChecked, Mode=TwoWay}" Margin="3" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Path=DoesntHaveKids.Text}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <CheckBox IsChecked="{Binding Path=IsNonSmoker.IsChecked, Mode=TwoWay}" Margin="3" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Path=IsNonSmoker.Text}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Button Name="searchBtn" 
+                    Grid.Row="1"                 
+                    Padding="10"
+                    HorizontalAlignment="Center"                    
+                    VerticalAlignment="Bottom"
+                    Margin="0,20,0,0" Click="SearchBtn_Click">Start search</Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</Window>

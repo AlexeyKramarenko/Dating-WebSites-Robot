@@ -1,6 +1,5 @@
-﻿using Infrastructure.Handlers;
+﻿using Infrastructure;
 using Infrastructure.Models;
-using Infrastructure.Selectors.Navigation;
 using Utils;
 
 namespace ConsoleApp.Mamba
@@ -15,26 +14,9 @@ namespace ConsoleApp.Mamba
                                           email: "***",
                                           password: "***");
 
-            var webDriver = WebDriverFactory.Create();
+            var executor = new HandlersExecutor();
 
-            HandlerBase handler = new MambaHandler(webDriver, new MambaNavigationSelectors());
-
-            handler.Login(loginData);
-
-            handler.SetLocalization();
-
-            var requirements = handler.BuildProfileRequirements(dialogResult);
-
-            handler.SetProfileRequirements(requirements);
-
-            if (dialogResult.Search == Search.Encounters)
-            {
-                handler.SearchFromEncounters();
-            }
-            else
-            {
-                handler.SearchFromPeopleNearby();
-            }
+            executor.RunMambaHandler(dialogResult, loginData);
         }
     }
 }
