@@ -7,8 +7,7 @@ namespace WpfApp.Badoo
     {
         public bool IsChecked { get; set; }
         public string Text { get; set; }
-    }
-        
+    }        
     public class DialogViewModel
     {
         public Sex[] PossibleSexTypes => new Sex[]
