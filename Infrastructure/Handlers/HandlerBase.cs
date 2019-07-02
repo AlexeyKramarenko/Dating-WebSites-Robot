@@ -42,10 +42,10 @@ namespace Infrastructure.Handlers
             WaitSeconds(3);
 
             _webDriver.FindElement(_loginSelectors.Email)
-                      .SendKeys(loginData.Email);
+                      .SendKeys(loginData.Credentials.Email);
 
             _webDriver.FindElement(_loginSelectors.Password)
-                      .SendKeys(loginData.Password);
+                      .SendKeys(loginData.Credentials.Password);
 
             _webDriver.FindElement(_loginSelectors.LoginBtn)
                       .Click();

@@ -1,5 +1,7 @@
 ﻿using Infrastructure;
+using Infrastructure.Files;
 using Infrastructure.Models;
+using System;
 using System.Windows;
 
 namespace WpfApp.Badoo
@@ -23,14 +25,18 @@ namespace WpfApp.Badoo
                                         vm.DoesntHaveKids.IsChecked,
                                         vm.IsNonSmoker.IsChecked,
                                         vm.SelectedSearchLocation);
+            try
+            {
+                var loginData = new LoginData("https://badoo.com/signin/", ConfigReader.Credentials);
 
-            var loginData = new LoginData(signInUrl: "https://badoo.com/signin/",
-                                          email: "***",
-                                          password: "***");
+                var executor = new HandlersExecutor();
 
-            var executor = new HandlersExecutor();
-
-            executor.RunBadooHandler(dialogResult, loginData);
+                executor.RunBadooHandler(dialogResult, loginData);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
     }
 }

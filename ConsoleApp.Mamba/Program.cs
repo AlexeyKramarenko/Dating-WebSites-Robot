@@ -1,5 +1,7 @@
 ﻿using Infrastructure;
+using Infrastructure.Files;
 using Infrastructure.Models;
+using System;
 using Utils;
 
 namespace ConsoleApp.Mamba
@@ -10,13 +12,18 @@ namespace ConsoleApp.Mamba
         {
             var dialogResult = ConsoleAppHelper.RunDialog();
 
-            var loginData = new LoginData(signInUrl: "https://www.mamba.ru/login",
-                                          email: "***",
-                                          password: "***");
+            try
+            {
+                var loginData = new LoginData("https://www.mamba.ru/login", ConfigReader.Credentials);
 
-            var executor = new HandlersExecutor();
+                var executor = new HandlersExecutor();
 
-            executor.RunMambaHandler(dialogResult, loginData);
+                executor.RunBadooHandler(dialogResult, loginData);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+            }
         }
     }
 }
