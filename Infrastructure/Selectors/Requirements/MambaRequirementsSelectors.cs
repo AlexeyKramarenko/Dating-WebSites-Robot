@@ -1,5 +1,6 @@
 ﻿using Localization.Models;
 using OpenQA.Selenium;
+using System;
 
 namespace Infrastructure.Selectors.Requirements
 {
@@ -9,7 +10,8 @@ namespace Infrastructure.Selectors.Requirements
 
         public MambaRequirementsSelectors(MambaLocalization localization)
         {
-            _localization = localization;
+            _localization = localization ??
+                throw new ArgumentNullException(nameof(localization));
         }
 
         public By RelationshipStatusHeader { get => By.XPath($"//div[contains(string(), '{_localization.RelationshipStatusHeader}')]"); }

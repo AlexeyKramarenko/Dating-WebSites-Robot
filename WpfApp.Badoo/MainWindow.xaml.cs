@@ -1,7 +1,7 @@
 ﻿using Infrastructure;
 using Infrastructure.Files;
 using Infrastructure.Models;
-using System;
+using System.IO;
 using System.Windows;
 
 namespace WpfApp.Badoo
@@ -33,9 +33,13 @@ namespace WpfApp.Badoo
 
                 executor.RunBadooHandler(dialogResult, loginData);
             }
-            catch (Exception exc)
+            catch (FileNotFoundException ex)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch
+            {
+                MessageBox.Show("There was a problem with this application. Please contact support.");
             }
         }
     }
