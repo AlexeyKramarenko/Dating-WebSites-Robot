@@ -50,6 +50,8 @@ namespace Infrastructure.Files
             }
         }
 
+        #region Private Methods
+
         private static (bool Success, string Value) Validate(string text, string pattern)
         {
             var match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
@@ -63,5 +65,7 @@ namespace Infrastructure.Files
 
             return (match.Success, Value);
         }
+
+        #endregion
     }
 }

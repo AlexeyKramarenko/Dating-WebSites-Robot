@@ -2,12 +2,6 @@
 
 namespace Localization
 {
-    public enum Sex
-    {
-        Man,
-        Woman
-    }
-
     public static class LocalizationHelper
     {
         public static BadooLocalization GetBadooLocalization(Sex lookingFor)

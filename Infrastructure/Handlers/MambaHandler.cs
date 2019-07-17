@@ -3,6 +3,7 @@ using Infrastructure.Requirements.Builders;
 using Infrastructure.Selectors.Navigation;
 using Infrastructure.Selectors.Requirements;
 using Localization;
+using Localization.Models;
 using OpenQA.Selenium;
 using System;
 using System.Globalization;

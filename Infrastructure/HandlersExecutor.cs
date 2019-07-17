@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Handlers;
+using Infrastructure.Logging;
 using Infrastructure.Models;
 using Infrastructure.Selectors.Navigation;
 using System;
@@ -8,6 +9,13 @@ namespace Infrastructure
 {
     public class HandlersExecutor
     {
+        private readonly ILogger _logger;
+        public HandlersExecutor(ILogger logger)
+        {
+            _logger = logger ??
+                throw new ArgumentNullException(nameof(logger));
+        }
+
         public void RunBadooHandler(DialogResult dialogResult,
                                     LoginData loginData)
         {
@@ -51,10 +59,14 @@ namespace Infrastructure
 
             if (dialogResult.Search == Search.Encounters)
             {
+                _logger.Log(Search.Encounters.LogInfo);
+
                 handler.SearchFromEncounters();
             }
-            else
+            else if (dialogResult.Search == Search.PeopleNearby)
             {
+                _logger.Log(Search.PeopleNearby.LogInfo);
+
                 handler.SearchFromPeopleNearby();
             }
         }

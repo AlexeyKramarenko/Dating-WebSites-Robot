@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Models;
-using Localization;
+using Localization.Models;
 using System;
 using System.Text.RegularExpressions;
 

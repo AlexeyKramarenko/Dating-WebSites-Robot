@@ -1,13 +1,7 @@
-﻿using Localization;
+﻿using Localization.Models;
 
 namespace Infrastructure.Models
 {
-    public enum Search
-    {
-        Encounters,
-        PeopleNearby
-    }
-
     public class DialogResult
     {
         public Sex Sex { get; }

@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Models;
 using Infrastructure.Requirements;
 using Infrastructure.Selectors;
-using Localization;
+using Localization.Models;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
