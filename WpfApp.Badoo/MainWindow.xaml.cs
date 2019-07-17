@@ -23,32 +23,46 @@ namespace WpfApp.Badoo
 
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (DialogViewModel)DataContext;
+            var vm = DataContext as DialogViewModel;
 
-            var dialogResult = new DialogResult(
+            if (vm != null)
+            {
+                var dialogResult = new DialogResult(
                                         vm.SelectedSex,
                                         vm.IsFree.IsChecked,
                                         vm.DoesntHaveKids.IsChecked,
                                         vm.IsNonSmoker.IsChecked,
                                         vm.SelectedSearchLocation);
-            try
-            {
-                var loginData = new LoginData("https://badoo.com/signin/", ConfigReader.Credentials);
+                try
+                {
+                    var loginData = new LoginData("https://badoo.com/signin/", ConfigReader.Credentials);
 
-                var executor = new HandlersExecutor(Logger);
+                    var executor = new HandlersExecutor(Logger);
 
-                executor.RunBadooHandler(dialogResult, loginData);
-            }
-            catch (FileNotFoundException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.Message);
+                    executor.RunBadooHandler(dialogResult, loginData);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex.Message);
 
-                MessageBox.Show("There was a problem with this application. Please contact support.");
+                    DisplayErrorMessage();
+                }
             }
+            else
+            {
+                Logger.Log($"Cannot cast viewmodel into '{nameof(DialogViewModel)}' type.");
+
+                DisplayErrorMessage();
+            }
+        }
+
+        private static void DisplayErrorMessage()
+        {
+            MessageBox.Show("There was a problem with this application. Please contact support.");
         }
     }
 }

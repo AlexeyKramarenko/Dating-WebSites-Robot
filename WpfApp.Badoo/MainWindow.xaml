@@ -12,8 +12,10 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15" >
                 <TextBlock Text="You looks for:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <ComboBox ItemsSource="{Binding PossibleSexTypes, Mode=OneWay}" 
-                          SelectedItem="{Binding SelectedSexType}"
-                          Width="90"                           
+                          SelectedItem="{Binding Path=SelectedSex }"
+                          SelectedValuePath="StringEquivalent"
+                          DisplayMemberPath="StringEquivalent"
+                          Width="90"                         
                           VerticalAlignment="Center"
                           Margin="54,0,0,0"/>
             </StackPanel>
@@ -27,6 +29,8 @@
                            HorizontalAlignment="Left"/>
                 <ComboBox ItemsSource="{Binding PossibleSearchLocations, Mode=OneWay}" 
                           SelectedItem="{Binding SelectedSearchLocation}"
+                          SelectedValuePath="StringEquivalent"
+                          DisplayMemberPath="StringEquivalent"
                           Width="90" 
                           Margin="10,0,0,0"
                           VerticalAlignment="Center"/>
