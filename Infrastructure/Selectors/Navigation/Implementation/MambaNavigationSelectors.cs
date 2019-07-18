@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Infrastructure.Selectors.Navigation
+namespace Infrastructure.Selectors.Navigation.Implementation
 {
     public class MambaNavigationSelectors : ILoginSelectors
     {

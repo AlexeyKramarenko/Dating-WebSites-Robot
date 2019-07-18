@@ -1,4 +1,5 @@
 ﻿using Localization.Models;
+using System;
 
 namespace Infrastructure.Models
 {
@@ -16,11 +17,16 @@ namespace Infrastructure.Models
                             bool isNonSmoker,
                             Search search)
         {
-            Sex = sex;
+
+            Sex = sex ??
+                throw new ArgumentNullException(nameof(sex));
+
+            Search = search ??
+                throw new ArgumentNullException(nameof(search));
+
             IsFree = isFree;
             DoesntHaveKids = doesntHaveKids;
             IsNonSmoker = isNonSmoker;
-            Search = search;
         }
     }
 }

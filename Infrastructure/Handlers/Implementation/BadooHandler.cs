@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Requirements;
-using Infrastructure.Selectors.Navigation;
+using Infrastructure.Requirements.Builders.Implementation;
+using Infrastructure.Selectors.Navigation.Implementation;
 using Infrastructure.Selectors.Requirements;
 using Localization;
 using Localization.Models;
@@ -10,7 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 
-namespace Infrastructure.Handlers
+namespace Infrastructure.Handlers.Implementation
 {
     public class BadooHandler : HandlerBase
     {

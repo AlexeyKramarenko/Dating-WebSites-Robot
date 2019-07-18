@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Requirements;
-using Infrastructure.Requirements.Builders;
-using Infrastructure.Selectors.Navigation;
+using Infrastructure.Requirements.Builders.Implementation;
+using Infrastructure.Selectors.Navigation.Implementation;
 using Infrastructure.Selectors.Requirements;
 using Localization;
 using Localization.Models;
@@ -9,7 +9,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 
-namespace Infrastructure.Handlers
+namespace Infrastructure.Handlers.Implementation
 {
     public class MambaHandler : HandlerBase
     {

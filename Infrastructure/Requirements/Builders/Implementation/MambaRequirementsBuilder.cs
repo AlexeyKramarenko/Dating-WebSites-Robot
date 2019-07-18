@@ -1,15 +1,15 @@
 ﻿using Infrastructure.Models;
 using Infrastructure.Selectors.Requirements;
 
-namespace Infrastructure.Requirements
+namespace Infrastructure.Requirements.Builders.Implementation
 {
-    public class BadooRequirementsBuilder : IRequirementsBuilder
+    public class MambaRequirementsBuilder : IRequirementsBuilder
     {
         public ProfileRequirements Result { get; } = new ProfileRequirements();
 
-        private readonly BadooRequirementsSelectors _selectors;
+        private readonly MambaRequirementsSelectors _selectors;
 
-        public BadooRequirementsBuilder(BadooRequirementsSelectors selectors)
+        public MambaRequirementsBuilder(MambaRequirementsSelectors selectors)
         {
             _selectors = selectors;
         }
@@ -17,19 +17,22 @@ namespace Infrastructure.Requirements
         public void IncludeFreeRelationshipStatus()
         {
             Result.OnlyConditions
-                  .Add(new OnlyTypeCondition(_selectors.FreeRelationshipStatus));
+                  .Add(new OnlyTypeCondition(_selectors.RelationshipStatusHeader));
         }
 
         public void IncludeAbsenceOfKids()
         {
+            Result.OnlyConditions
+                  .Add(new OnlyTypeCondition(_selectors.KidsHeader));
+
             Result.OrConditions
                   .Add(new OrTypeCondition(_selectors.KidsValue1, _selectors.KidsValue2));
         }
 
         public void IncludeAbsenceOfSmoking()
         {
-            Result.OrConditions
-                  .Add(new OrTypeCondition(_selectors.SmokingValue1, _selectors.SmokingValue2));
+            Result.AndConditions
+                  .Add(new AndTypeCondition(_selectors.SmokingHeader, _selectors.SmokingValue));
         }
     }
 }
