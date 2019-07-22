@@ -1,10 +1,11 @@
-﻿using Infrastructure;
+﻿using Functional;
+using Infrastructure;
 using Infrastructure.Files;
 using Infrastructure.Logging;
 using Infrastructure.Logging.Implementation;
 using Infrastructure.Models;
+using Infrastructure.Models.Errors;
 using System;
-using System.IO;
 using Utils;
 
 namespace ConsoleApp.Badoo
@@ -15,26 +16,25 @@ namespace ConsoleApp.Badoo
 
         static void Main(string[] args)
         {
-            var dialogResult = ConsoleAppHelper.RunDialog();
+            var message =
 
-            try
-            {
-                var loginData = new LoginData("https://badoo.com/signin/", ConfigReader.Credentials);
+                ConfigReader.ReadCredentials()
+                            .Map(credentials =>
+                                {
+                                    var loginData = new LoginData("https://badoo.com/signin/", credentials);
+                                    var dialogResult = ConsoleAppHelper.RunDialog();
+                                    var executor = new HandlersExecutor(Logger);
 
-                var executor = new HandlersExecutor(Logger);
+                                    return executor.RunBadooHandler(dialogResult, loginData)
+                                                   .Map(handlerMessage => handlerMessage)
+                                                   .Reduce(error => error.Message, error => error is FileDoesNotContainInfo)
+                                                   .Reduce(error => error.Message, error => error is FileNotFound);
+                                })
+                            .Reduce(error => error.Message, error => error is FileDoesNotContainInfo)
+                            .Reduce(error => error.Message, error => error is FileNotFound)
+                            .Reduce(_ => "There was a problem with this application. Please contact support.");
 
-                executor.RunBadooHandler(dialogResult, loginData);
-            }
-            catch (FileNotFoundException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.Message);
-
-                Console.WriteLine("There was a problem with this application. Please contact support.");
-            }
+            Console.WriteLine(message);
         }
     }
 }

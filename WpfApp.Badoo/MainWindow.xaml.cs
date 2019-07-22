@@ -23,41 +23,43 @@ namespace WpfApp.Badoo
 
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as DialogViewModel;
+            throw new NotImplementedException();
 
-            if (vm != null)
-            {
-                var dialogResult = new DialogResult(
-                                        vm.SelectedSex,
-                                        vm.IsFree.IsChecked,
-                                        vm.DoesntHaveKids.IsChecked,
-                                        vm.IsNonSmoker.IsChecked,
-                                        vm.SelectedSearchLocation);
-                try
-                {
-                    var loginData = new LoginData("https://badoo.com/signin/", ConfigReader.Credentials);
+            //var vm = DataContext as DialogViewModel;
 
-                    var executor = new HandlersExecutor(Logger);
+            //if (vm != null)
+            //{
+            //    var dialogResult = new DialogResult(
+            //                            vm.SelectedSex,
+            //                            vm.IsFree.IsChecked,
+            //                            vm.DoesntHaveKids.IsChecked,
+            //                            vm.IsNonSmoker.IsChecked,
+            //                            vm.SelectedSearchLocation);
+            //    try
+            //    {
+            //        var loginData = new LoginData("https://badoo.com/signin/", ConfigReader.Credentials);
 
-                    executor.RunBadooHandler(dialogResult, loginData);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Log(ex.Message);
+            //        var executor = new HandlersExecutor(Logger);
 
-                    DisplayErrorMessage();
-                }
-            }
-            else
-            {
-                Logger.Log($"Cannot cast viewmodel into '{nameof(DialogViewModel)}' type.");
+            //        executor.RunBadooHandler(dialogResult, loginData);
+            //    }
+            //    catch (FileNotFoundException ex)
+            //    {
+            //        MessageBox.Show(ex.Message);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Logger.Log(ex.Message);
 
-                DisplayErrorMessage();
-            }
+            //        DisplayErrorMessage();
+            //    }
+            //}
+            //else
+            //{
+            //    Logger.Log($"Cannot cast viewmodel into '{nameof(DialogViewModel)}' type.");
+
+            //    DisplayErrorMessage();
+            //}
         }
 
         private static void DisplayErrorMessage()

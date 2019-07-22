@@ -109,10 +109,6 @@
       <Project>{E632524A-594B-4C7B-9DBE-DA1D6D537A53}</Project>
       <Name>Localization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
-      <Project>{EB892E09-E8DE-4BC3-844E-5DA2A68D5E8E}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -55,6 +55,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Functional\Functional.csproj">
+      <Project>{cdf39d14-c8b4-409d-993f-87cf5cf9e3bc}</Project>
+      <Name>Functional</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{9287109B-4C28-4A6F-A398-A3DDC7964EBD}</Project>
       <Name>Infrastructure</Name>

@@ -1,7 +1,9 @@
-﻿using Infrastructure.Handlers;
+﻿using Functional;
+using Infrastructure.Handlers;
 using Infrastructure.Handlers.Implementation;
 using Infrastructure.Logging;
 using Infrastructure.Models;
+using Infrastructure.Models.Errors;
 using Infrastructure.Selectors.Navigation.Implementation;
 using System;
 using Utils;
@@ -17,24 +19,30 @@ namespace Infrastructure
                 throw new ArgumentNullException(nameof(logger));
         }
 
-        public void RunBadooHandler(DialogResult dialogResult,
-                                    LoginData loginData)
+        public Either<Error, string> RunBadooHandler(
+                                             DialogResult dialogResult,
+                                             LoginData loginData)
         {
             var webDriver = WebDriverFactory.Create();
 
             var handler = new BadooHandler(webDriver, new BadooNavigationSelectors());
 
             Run(handler, dialogResult, loginData);
+
+            return null;
         }
 
-        public void RunMambaHandler(DialogResult dialogResult,
-                                    LoginData loginData)
+        public Either<Error, string> RunMambaHandler(
+                                             DialogResult dialogResult,
+                                             LoginData loginData)
         {
             var webDriver = WebDriverFactory.Create();
 
             var handler = new MambaHandler(webDriver, new MambaNavigationSelectors());
 
             Run(handler, dialogResult, loginData);
+
+            return null;
         }
 
         #region Private Methods

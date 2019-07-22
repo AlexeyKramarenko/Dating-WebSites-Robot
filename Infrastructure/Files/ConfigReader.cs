@@ -2,6 +2,8 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Functional;
+using Infrastructure.Models.Errors;
 
 namespace Infrastructure.Files
 {
@@ -9,61 +11,54 @@ namespace Infrastructure.Files
     {
         private const string FileName = "credentials.ini";
 
-        private static string FileNotFoundMessage = $"'{FileName}' file should be placed where '.exe' file is situated.";
-
-        private static string InvalidOperationMessage = $@"'{FileName}' file should contain your email and 
-                                                           password of your dating website in such format:
-                                                                       email=my_email@gmail.com;  
-                                                                       password=my_passwd;";
-        public static Credentials Credentials
+        public static Either<Error, Credentials> ReadCredentials()
         {
-            get
+            string text;
+
+            try
             {
-                string text;
+                text = File.ReadAllText(FileName);
 
-                try
+                if (string.IsNullOrEmpty(text))
                 {
-                    text = File.ReadAllText(FileName);
-
-                    if (string.IsNullOrEmpty(text))
-                    {
-                        throw new InvalidOperationException(InvalidOperationMessage);
-                    }
-                }
-                catch (FileNotFoundException)
-                {
-                    throw new FileNotFoundException(FileNotFoundMessage);
-                }
-
-                var email = Validate(text, "email=(.*?);");
-
-                var password = Validate(text, "password=(.*?);");
-
-                if (email.Success && password.Success)
-                {
-                    return new Credentials(email.Value, password.Value);
-                }
-                else
-                {
-                    throw new InvalidOperationException(InvalidOperationMessage);
+                    return new FileDoesNotContainInfo(FileName);
                 }
             }
+            catch (FileNotFoundException)
+            {
+                return new FileNotFound(FileName);
+            }
+
+            var email = Validate(text, "email=(.*?);");
+
+            var password = Validate(text, "password=(.*?);");
+
+            if (email.Success && password.Success)
+            {
+                new Credentials(email.Result, password.Result);
+            }
+
+            return new FileDoesNotContainInfo(FileName);
         }
 
         #region Private Methods
 
-        private static (bool Success, string Value) Validate(string text, string pattern)
+        private static OperationResult Validate(string text, string pattern)
         {
-            var match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException(nameof(text));
 
-            string Value = null;
+            if (string.IsNullOrEmpty(pattern))
+                throw new ArgumentException(nameof(pattern));
+
+            var match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
 
             if (match.Success)
             {
-                Value = match.Groups[1].Value;
+                return OperationResult.Created(match.Groups[1].Value);
             }
 
-            return (match.Success, Value);
+            return OperationResult.Fail();
         }
 
         #endregion
